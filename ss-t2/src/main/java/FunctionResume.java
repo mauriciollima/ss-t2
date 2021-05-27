@@ -2,12 +2,14 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import org.apache.commons.io.FileUtils;
@@ -15,7 +17,47 @@ import org.apache.commons.io.FileUtils;
 import com.google.common.hash.Hashing;
 
 public class FunctionResume {
+
+	public static void teste() {
+		try {
+			File file = new File("C:/FuncoesResumo - SHA1.mp4");
+			FileInputStream is = new FileInputStream(file);
+			byte[] chunk = new byte[1024];
+			int chunkLen = 0;
+
+			List<byte[]> hashs = new ArrayList<byte[]>();
+
+			while ((chunkLen = is.read(chunk)) != -1) {
+				// your code..
+				hashs.add(chunk);
+				System.out.println("add chunk: " + chunk);
+			}
+
+			for (int i = hashs.size() - 1; i > -1; i--) {
+				byte[] bit = hashs.get(i);
+				String hashChunck  = Hashing.sha256().hashString(bit.toString(), StandardCharsets.UTF_8).toString();
+				System.out.println(hashChunck);
+//				System.out.println();
+//				System.out.println(i);
+//				System.out.println(bit);
+			}
+
+			System.out.println(hashs.size());
+
+		} catch (FileNotFoundException fnfE) {
+			// file not found, handle case
+		} catch (IOException ioE) {
+			// problem reading, handle case
+		}
+	}
+
 	public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+
+		teste();
+
+	}
+
+	public void oldMain() throws IOException {
 
 		String FILE_TO_SEND = "C:/FuncoesResumo - SHA1.mp4";
 
@@ -58,20 +100,16 @@ public class FunctionResume {
 			aux = Hashing.sha256().hashString(aux + buffer.toString(), StandardCharsets.UTF_8).toString();
 		}
 
-
 		String t = null;
-		while(!hashTeste.isEmpty()) {
+		while (!hashTeste.isEmpty()) {
 			String hx = hashTeste.pop();
 			t = Hashing.sha256().hashString(aux + hx, StandardCharsets.UTF_8).toString();
 		}
-		
+
 		System.out.println(t);
-		
-		
-		
+
 		System.out.println(aux);
 //		
-
 	}
 
 	public static ArrayList<String> getSha256Hash(File file) throws IOException, NoSuchAlgorithmException {
