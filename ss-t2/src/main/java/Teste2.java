@@ -1,26 +1,30 @@
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Stack;
 
 public class Teste2 {
 
-	public static void main(String[] args) {
-		
-		try {
-		    File file = new File("C:/FuncoesResumo - SHA1.mp4");
-		    FileInputStream is = new FileInputStream(file);
-		    byte[] chunk = new byte[1024];
-		    int chunkLen = 0;
-		    while ((chunkLen = is.read(chunk)) != -1) {
-		        // your code..
-		    }
-		} catch (FileNotFoundException fnfE) {
-		    // file not found, handle case
-		} catch (IOException ioE) {
-		    // problem reading, handle case
+	public static void main(String[] args) throws IOException {
+		char[] myBuffer = new char[1024];
+		int bytesRead = 0;
+		BufferedReader in = new BufferedReader(new FileReader("C:\\FuncoesResumo - SHA1.mp4"));
+
+		ArrayList<char[]> list = new ArrayList<char[]>();
+		while ((bytesRead = in.read(myBuffer, 0, 1024)) != -1) {
+//			System.out.println(myBuffer);
+			list.add(myBuffer);
+		}
+
+		Stack<char[]> stack = new Stack<char[]>();
+
+		stack.addAll(list);
+
+		char[] teste = stack.pop();
+
+		while (!stack.isEmpty()) {
+			System.out.println(teste);
 		}
 
 	}
